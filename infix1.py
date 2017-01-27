@@ -1,7 +1,6 @@
 #exec in python 3 shell: exec(open("infix1.py").read())
 #exec in python 2 shell: execfile("infix1.py")
-#linux to windows
-#windows to linux
+#linux to windows part 2
 
 
 def eval_infix_sum(expr, pos):
