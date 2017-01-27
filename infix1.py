@@ -1,7 +1,7 @@
 #exec in python 3 shell: exec(open("infix1.py").read())
 #exec in python 2 shell: execfile("infix1.py")
-#test change for github 33334
-#final change
+#linux to windows
+
 def eval_infix_sum(expr, pos):
 	"""evaluate a sum expression (zero or more additions and subtractions)"""
 
