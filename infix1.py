@@ -1,7 +1,4 @@
-#exec in python 3 shell: exec(open("infix1.py").read())
-#exec in python 2 shell: execfile("infix1.py")
-#linux to windows part 2
-
+#exec(open("infix1.py").read())
 
 def eval_infix_sum(expr, pos):
 	"""evaluate a sum expression (zero or more additions and subtractions)"""
@@ -45,8 +42,7 @@ def eval_infix_product(expr, pos):
 def eval_infix_factor(expr, pos):
 	"""evaluate a factor (number or parenthesized sub-expression)"""
 
-	#this function figures out whats inside the parentheses, creates a new string for that part-
-	#-and then evaluates that substring
+	#figures out whats inside the parentheses, creates a new string for that part and then evaluates that substring
 
 	#the number of open/closed parentheses. this is necessary to make sure nested parentheses work
 	openparen = 1
@@ -85,6 +81,8 @@ def eval_infix_list(expr):
 	#adds a semicolon making the string easier to work with	
 	expr.append(';')
 	
+	#each loop runs through the list, evaluating parts of expr in order of operations
+	#the first loop evaluates all parenthesized expressions
 	pos = 0
 	while expr[pos] != ';':
 
@@ -94,7 +92,7 @@ def eval_infix_list(expr):
 
 		pos += 1
 
-
+	#then all the multiplications/divisions
 	pos = 0
 	while expr[pos] != ';':
 
@@ -105,7 +103,7 @@ def eval_infix_list(expr):
 		
 		pos += 1
 	
-
+	#then all the additions/subtractions
 	pos = 0
 	while expr[pos] != ';':
 
@@ -116,4 +114,5 @@ def eval_infix_list(expr):
 	
 		pos += 1
 
+	#there should be nothing left other than the solution at position 0
 	return (expr[0])
