@@ -23,7 +23,6 @@ def eval_infix_sum(expr, pos):
 	return(expr)    
 
 
-
 def eval_infix_product(expr, pos):
 	"""evaluate a product expression (zero or more multiplications/divisions)"""
 
@@ -73,7 +72,7 @@ def eval_infix_factor(expr, pos):
 	expr[pos] = ans
 	del expr[pos+1 : endpos+1]
 
-	return expr
+	return (expr)
 
 def eval_infix(expr):       
 
@@ -83,39 +82,38 @@ def eval_infix(expr):
 
 def eval_infix_list(expr):
 	
-	#adds a semicolon making the string easier to work with
-	if expr[-1] != ';':
-		expr += ';'
+	#adds a semicolon making the string easier to work with	
+	expr.append(';')
 	
-	#i tried using a "for pos in range" thing and it didnt work so im doing this. 
-	while ('(' in expr) or (')' in expr):
+	pos = 0
+	while expr[pos] != ';':
 
-		pos = 0
-		while not(expr[pos] == '('):
+		if expr[pos] == '(':
 
-			pos += 1
+			expr = eval_infix_factor(expr, pos)
 
-		expr = eval_infix_factor(expr, pos)
+		pos += 1
+
+
+	pos = 0
+	while expr[pos] != ';':
+
+		if expr[pos] == '*' or expr[pos] == '/':
+
+			expr = eval_infix_product(expr, pos)
+			pos -= 1
+		
+		pos += 1
 	
-	#does all of the multiplcation and division operations until there are no more * or / signs
-	while ('*' in expr) or ('/' in expr):
 
-		pos = 0
-		while not((expr[pos] == '*') or (expr[pos] == '/')):
+	pos = 0
+	while expr[pos] != ';':
 
-			pos += 1
+		if expr[pos] == '+' or expr[pos] == '-':
 
-		expr = eval_infix_product (expr, pos)
-
-
-	#does all of the add/sub operations until there are no more + or - signs
-	while ('+' in expr) or ('-' in expr):
-
-		pos = 0
-		while not((expr[pos] == '+') or (expr[pos] == '-')):
-
-			 pos += 1
-
-		expr = eval_infix_sum (expr, pos)
+			expr = eval_infix_sum(expr, pos)
+			pos -= 1
+	
+		pos += 1
 
 	return (expr[0])
