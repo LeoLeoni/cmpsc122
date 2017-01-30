@@ -38,15 +38,3 @@ class Peekable():
 # this function is defined just to allow similarity to next()
 def peek(x):
     return x.peek()
-
-
-if __name__ == "__main__":
-    i = Peekable(iter([1,2,3,4,5]))
-    print( peek(i) )        # peek at the 1
-    print( peek(i) )        # and again
-    print( next(i) )        # should also be the 1 we were looking at
-    print( next(i) )        # move on and return 2
-    print( next(i) )        # move on and return 3
-    print( peek(i) )        # peek at the 4
-    print( next(i) )        # which is still there before this advances
-    print( list(Peekable(iter([1,2,3,4,5]))) )   # still iterates normallly
