@@ -5,7 +5,7 @@ class Peekable():
         """Take an existing iterator and add peek functionality
         iterator    -- the previous 'ordinary iterator
     """
-        self._iterator = iterator;
+        self._iterator = iterator
         self._peeked = None
 
     #   the following two methods meet the protocol for iterators
