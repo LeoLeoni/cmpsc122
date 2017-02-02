@@ -1,3 +1,5 @@
+#exec(open("peekable.py").read())
+
 class Peekable():
     """An iterator with the ability to examine a value without advancement"""
 
