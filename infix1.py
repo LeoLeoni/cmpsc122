@@ -9,11 +9,20 @@ def eval_infix_product(iterator):
 
 	print(peek(iterator))
 
-	while peek(iterator) != '+' or peek(iterator) != '-':
+	while peek(iterator) != '*' or peek(iterator) != '/':
 
+		f = peek(iterator)
+		print(f)
 		next(iterator)
 
-	print(peek(iterator))
+	if peek(iterator) == '*':
+
+		f *= next(iterator)
+		print (peek(iterator))
+
+	print(f)
+	return (f)
+
 def eval_infix_factor(expr, pos):
 	"""evaluate a factor (number or parenthesized sub-expression)"""
 
