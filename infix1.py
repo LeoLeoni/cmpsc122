@@ -1,44 +1,19 @@
 #exec(open("infix1.py").read())
 
-def eval_infix_sum(expr, pos):
+def eval_infix_sum(iterator):
 	"""evaluate a sum expression (zero or more additions and subtractions)"""
 
-	#pos SHOULD be on the operator sign		
 
-	#replaces the first value with the sum/difference
-	if (expr[pos] == '+'):
-
-		expr[pos-1] = int(expr[pos-1]) + int(expr[pos+1])     
-
-	elif (expr[pos] == '-'):
-		
-		expr[pos-1] = int(expr[pos-1]) - int(expr[pos+1])
-
-	#deletes the operator sign and the second number
-	del expr[pos : pos+2]
-
-	return(expr)    
-
-
-def eval_infix_product(expr, pos):
+def eval_infix_product(iterator):
 	"""evaluate a product expression (zero or more multiplications/divisions)"""
 
-	#pos SHOULD be on the operator sign		
+	print(peek(iterator))
 
-	#replaces the first value with the product
-	if (expr[pos] == '*'):
+	while peek(iterator) != '+' or peek(iterator) != '-':
 
-		expr[pos-1] = int(expr[pos-1]) * int(expr[pos+1])     
+		next(iterator)
 
-	elif (expr[pos] == '/'):
-		
-		expr[pos-1] = int(expr[pos-1]) // int(expr[pos+1])
-
-	#deletes the operator sign and the second number
-	del expr[pos : pos+2]
-
-	return(expr)
-
+	print(peek(iterator))
 def eval_infix_factor(expr, pos):
 	"""evaluate a factor (number or parenthesized sub-expression)"""
 
