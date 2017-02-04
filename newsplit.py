@@ -15,15 +15,19 @@ def new_split_iter( expr ):
 		
 		if expr[pos].isdigit() == False:
 
+			#the only non-digits in the expression should be + - * / ( ) so they are yielded as they are
 			yield (expr[pos])
 			pos += 1
 
 		else:
 			
+			#use string addition to add the digits of the number together, then yield that number as an int. reset the number string after
 			while expr[pos].isdigit():
-
+				
 				num += expr[pos]
 				pos += 1
 		
 			yield (int(num))
 			num = ""
+
+	yield ";"
