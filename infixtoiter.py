@@ -8,7 +8,7 @@ def to_postfix (expr):
 def postfix_sum (iterator):
 
 	yield from postfix_product(iterator)
-		
+	
 	while peek(iterator) == '+' or peek(iterator) == '-':
 		sign = next(iterator)	#should be an operator sign
 		yield from postfix_product(iterator)
@@ -19,7 +19,6 @@ def postfix_product (iterator):
 	yield from postfix_factor(iterator)
 
 	while peek(iterator) == '*' or peek(iterator) == '/' or peek(iterator) =='%':
-
 		sign = next(iterator)		#should be an operator sign
 		yield from postfix_factor(iterator)
 		yield sign
