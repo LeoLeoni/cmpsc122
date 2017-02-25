@@ -8,7 +8,6 @@ class LinkedList:
 			self._value = v
 			self._next = n
 
-
 	def __init__(self):
 		"""Initialized list containing only a blank node"""
 		self._tail = self.Node(None,None)
