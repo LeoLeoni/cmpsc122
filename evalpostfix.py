@@ -1,39 +1,35 @@
 #exec(open("evalpostfix.py").read())
+from vartree import VarTree
 from linkedlist import LinkedList
 from peekable import Peekable, peek
 
 def eval_postfix (iter):
 
-	iter = Peekable(iter)
 	s = LinkedList() 		#s = stack
-	s.push(next(iter))		#first value will always be a number
+	t = VarTree()			#t = tree
+	
+	for token in iter:
+		if (str(token)).isalnum():
+			s.push(token)
 
-	while peek(iter) is not None:	#continues until the iterator runs out of values
+		elif token == '=':
+			val = s.pop()
+			if not (str(val)).isdigit():		#allows assigning one variable to another
+				val = t.lookup(val)				#if it finds a variable, grabs its value from the tree
+			var = s.pop()
+			t.assign( str(var), val)
+			s.push(var)
 
-		if peek(iter) == '+':
-			second = s.pop()
-			s.push(s.pop() + second)
-			next(iter)
-		elif peek(iter) == '-':
-			second = s.pop()
-			s.push(s.pop() - second)
-			next(iter)
-		elif peek(iter) == '*':
-			second = s.pop()
-			s.push(s.pop() * second)
-			next(iter)
-		elif peek(iter) == '/':
-			second = s.pop()
-			s.push(s.pop() // second)
-			next(iter)
-		elif peek(iter) == '%':
-			second = s.pop()
-			s.push(s.pop() % second)
-			next(iter)
 		else:
-			s.push(next(iter))
+			right = s.pop()
+			left = s.pop()
+			s.push(eval( str(left) + token + str(right) ))
+
 			
 	#the solution should be the only value in the stack
-	return s.top()
+	sol = s.pop()
+	if not (str(sol)).isdigit():
+		sol = t.lookup(sol)
+	return int(sol)
 	
 	
