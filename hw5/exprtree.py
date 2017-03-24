@@ -1,8 +1,9 @@
 from abc import ABCMeta, abstractmethod
-from vartree import vartree
+from vartree import VarTree
 
 class ExprTree(metaclass = ABCMeta):
 	"""Abstract class for expression"""
+	# "variables" is a VarTree class object 
 	def __str__(self):
 		return ' '.join(str(x)for x in iter(self))
 
@@ -15,6 +16,7 @@ class ExprTree(metaclass = ABCMeta):
 		"""a post-order iterator to create a postfix expression"""
 		pass
 	@abstractmethod
+	#evaluate gets called everytime we need a value for something
 	def evaluate(self, variables):
 		"""evaluate using the existing variables"""
 		pass
@@ -28,6 +30,7 @@ class Var(ExprTree):
 	def postfix(self):
 		yield self._name
 	def evaluate(self, variables):
+		#for a variable, the function evaluate returns that variables value by calling the vartree lookup function
 		return variables.lookup(self._name)
 
 class Value(ExprTree):
@@ -44,6 +47,7 @@ class Value(ExprTree):
 class Cond(ExprTree):
 	"""A test condition with true/false cases"""
 	def __init__ (self, c, t, f):
+		#are all relational expressions
 		self._cond = c
 		self._true = t
 		self._false = f
@@ -55,9 +59,11 @@ class Cond(ExprTree):
 		yield ':'
 		yield from self._false
 
-	def postfix(self):
+	
 
 	def evaluate(self, variables):
+		#mux where cond is the selector, false = 0 and true = 1													#this is a long return statement but it works
+		return self._cond._evaluate(variables) and self._true._evaluate(variables) or not self._cond._evaluate(variables) and self._false._evaluate(variables)
 
 
 class Oper(ExprTree):
@@ -76,9 +82,35 @@ class Oper(ExprTree):
 	
 	def postfix(self):
 
+	def postfix(self):
+			yield from self._left.postfix()
+			yield from self._right.postfix()
+			yield self._oper
+
 	def evaluate(self, variables):
+
 		"""Evaluates the expression with support for relational operators."""
 		if self._oper != '=':
-			return eval(self._left + self._oper + self._right)
+			#eval() will return a bool given a relational oper, and a number given a arithmetic oper
+			return eval(  str(self._left._evaluate(variables))  +  str(self._oper + self._right._evaluate(variables))  )
 		else:
-			vartree.assign 
+			#in this case left should always be a var name and right should always be the value being assigned to it
+			variables.assign(self._left._name, self._right._evaluate(variables))
+			return self._right._evaluate(variables)
+
+
+	#test cases
+	if __name__ == '__main__':
+    V = VarTree()
+    VA = Var("A")
+    Sum = Oper(Value(2),'+',Value(3))
+    A = Oper(VA,'=',Sum)
+    print( "Infix iteration: ", list(A) )
+    print( "String version ", A )
+    print( "Postfix iteration: ", list(A.postfix() ))
+    print( "Execution: ", A.evaluate(V) )
+    print( "Afterwards, A = ", VA.evaluate(V) )
+
+    # If A == 5, return A+2 else return 3
+    CondTest = Cond(Oper(VA,'==',Value(5)),Oper(VA,'+',Value(2)),Value(3))
+    print( CondTest,'-->',CondTest.evaluate(V) )
