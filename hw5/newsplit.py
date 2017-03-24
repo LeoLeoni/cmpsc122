@@ -5,33 +5,42 @@ def new_split_iter( expr ):
 	also, the results are returned in a manner similar to iterator instead of a new data structure
 	"""
 	#takes out spaces in case there are spaces
-	expr = expr.replace(" ", "")
-	expr += ";"
+	expr = expr.replace(' ', '')
+	expr += ';'
 	pos = 0
-	num = ""    #initialized as str to make use of string addition
+	num = ''    #initialized as str to make use of string addition
 
-	while expr[pos] != ";":
+	while expr[pos] != ';':
 
-		if not expr[pos].isalnum():
-			#the only non-alnums in the expression should be + - * / ( ) = so they are yielded as they are
-			yield expr[pos]
-			pos += 1
+		if expr[pos].isdigit():
+			while expr[pos].isdigit():
+			#use string addition to add the digits of the number together, then yield that number as an int. reset the number string after
+				num += expr[pos]
+				pos += 1
+			yield int(num)
+			num = ""
 
-		elif not expr[pos].isdigit():
+		elif expr[pos].isalpha():
 			#support for variables that start with a letter
 			while expr[pos].isalnum():	#will not work if the variable name starts with a number
 				num += expr[pos]
 				pos += 1
+				
 			yield num
 			num = ""
 
-		else:
-			#use string addition to add the digits of the number together, then yield that number as an int. reset the number string after
-			while expr[pos].isdigit():
-				num += expr[pos]
-				pos += 1
-		
-			yield int(num)
-			num = ""
+		elif expr[pos] in ['+', '-', '*', '/', '%', '(', ')', '?', ':']:
+			yield expr[pos]
+			pos += 1
 
-	yield ";"
+		elif expr[pos] in ['<', '>', '!', '=']:
+			if expr[pos+1] == '=':
+				yield expr[pos:pos+2]
+				pos += 2
+			else:
+				yield expr[pos]
+				pos += 1
+
+		
+
+	yield ';'
