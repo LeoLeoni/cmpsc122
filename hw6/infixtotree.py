@@ -1,7 +1,7 @@
 #exec(open("infixtotree.py").read())
 from peekable import Peekable, peek
 from newsplit import new_split_iter
-from exprtree import Value,Var,Oper,Cond
+from exprtree import Value, Var, Oper, Cond, Funct
 
 #	precedence:		assign > conditional > relational > addition > product > parens
 #	similar alg to infixtoiter from previous except in tree form
@@ -62,7 +62,6 @@ def tree_prod(iter):
 		sign = next(iter)
 		right = tree_factor(iter)
 		left = Oper(left, sign, right)
-
 	return left
 
 
@@ -83,3 +82,4 @@ def tree_factor(iter):
 
 def to_expr_tree(expr):
 	return tree_assign(Peekable(new_split_iter(expr)))
+
