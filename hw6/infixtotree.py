@@ -68,15 +68,25 @@ def tree_prod(iter):
 def tree_factor(iter):
 	"""Handles parentheses"""
 
-	if peek(iter) == '(':
-		next(iter)				#passes over the ( The exprtree inherently includes the functionality of parens
+	next = str(next(iter))
+	if next == '(':
+		next(iter)				
 		ans = tree_assign(iter)	#recursively makes a new expr subtree for the contents of the parens
 		next(iter)				#passes over )
+		return ans
 	
-	elif str(peek(iter)).isdigit():
+	elif next.isdigit():
 		return Value(next(iter))
 
-	elif str(peek(iter)).isalpha():
+	elif peek(iter) == '(':
+		args = []
+		while peek(iter) != ')':
+			next(iter)
+			args.append(tree_assign(iter))
+		next(iter)
+		return Funct(nxt, args)
+
+	elif next.isalpha():
 		return Var(next(iter))
 
 
